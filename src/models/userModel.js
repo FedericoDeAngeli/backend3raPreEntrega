@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose"
 import { randomUUID } from "crypto"
 
+
 const collection = "usuarios"
 
 export const UserSchema = new Schema({

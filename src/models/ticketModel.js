@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import {randomUUID} from "crypto"
+import {randomInt, randomUUID} from "crypto"
 
 const collection = "ticket"
 
 export const TicketSchema = new Schema({
     _id: {type: String, default: randomUUID()},
-    code: {type: Number},
-    purchaseDateTime: {type: String},
+    code: {type: Number, default: randomInt(10, 1000 )},
+    purchaseDateTime: {type: String, default: Date.now()},
     amount: {type: Number},
     purchaser: {type: String}
 },{

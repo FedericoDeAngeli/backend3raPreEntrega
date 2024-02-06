@@ -1,5 +1,6 @@
 import { UserManager } from "../models/userModel.js"
 import { dbProductos } from "../models/productModel.js"
+import { dbCart } from "../models/cartModel.js"
 
 export const users = [
     { name: "Federico", lastname: "De Angeli", email: "fd@mail.com", age: 33, password: "123", rol: "admin"},
@@ -35,6 +36,12 @@ export const products = [
 
 ]
 
+const carts = [{product: [{pid: "a3", quantity:5}, {pid: "a1", quantity:2}]},
+         
+]
+
+
+
 export async function initialize(){
     await UserManager.deleteMany({})
  await UserManager.insertMany(users)
@@ -43,4 +50,8 @@ console.log("Registro Usuarios actualizado")
 await dbProductos.deleteMany({})
 await dbProductos.insertMany(products)
 console.log("Registro de Productos actualizado")
+
+await dbCart.deleteMany({})
+await dbCart.insertMany(carts),
+console.log("Registro de Carts actualizado")
 }

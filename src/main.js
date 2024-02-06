@@ -6,6 +6,8 @@ import { initialize } from "./utils/mocks.js";
 import { apiRouter } from "./routes/api/apiRouter.js";
 import { MONGODB_CNX_STRING, PORT } from "./config.js"
 
+import { sesiones } from "./middlewares/session.js";
+import { autenticacion } from "./middlewares/passport.js";
 
 await mongoose.connect(MONGODB_CNX_STRING)
 console.log("Conectado a base de datos")
@@ -13,6 +15,9 @@ console.log("Conectado a base de datos")
 
 
 const app = express()
+
+app.use(sesiones)
+app.use(autenticacion)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

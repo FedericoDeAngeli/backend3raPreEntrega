@@ -6,9 +6,10 @@ class UserDAO {
         return user;
     }
 
-    async readOne(id){
-        const user = await UserManager.findById(id).lean()
+    async readOne(data){
+            const user = await UserManager.findOne(data).lean()
         if(!user) throw new Error("User not found")
+
         return user
     }
 

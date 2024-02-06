@@ -5,8 +5,9 @@ class UserRepository{
         return await userDAO.create(data)
     }
 
-    async getUser(id){
-        return await userDAO.readOne(id)
+    async getUser(data){
+
+        return await userDAO.readOne(data)
     }
 
     async getAllUsers(){
