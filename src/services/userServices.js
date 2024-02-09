@@ -1,5 +1,5 @@
 import { userRepository } from "../repository/userRepository.js"
-// import { comparePass, hashear } from "../utils/criptografia.js"
+import { comparePass, hashear } from "../utils/criptografia.js"
 
 class UserService{
     async createUser(data){
@@ -24,22 +24,41 @@ class UserService{
 };
 
 class AuthService{
-    async authenticateUser(email, password){
+    async authenticateUser(username, password){
+        let datosUsuario
 
-        const user = await userRepository.getUser(email)
-        if(!user){
+        const usuario = await userRepository.getUser({email: username}).lean()
+        if(!usuario){
         throw new Error ("Usuario incorrecto")    }
-        if(password !== user.password){
+        if(comparePass(password, usuario.password)){
             throw new Error ("Contraseña incorrecta")
         }
 
-    return user
+        datosUsuario = {
+            email: usuario['email'],
+            name: usuario['name'],
+            lastname: usuario['lastname'],
+            rol: usuario['rol']
+          }
+        
+  
+        if (!datosUsuario) {
+          throw new Error('usuario no encontrado')
+        }
+  
+        return datosUsuario
     }
 async registerUser(data){
-    // data.password = hashear(data.password)
-    const user = await userRepository.createUser(data)
-
-    return user
+     data.password = hashear(data.password)
+    const creado = await userRepository.createUser(data)
+    
+    const datosUsuario = {
+        email: creado.email,
+        name: creado.name,
+        lastname: creado.lastname,
+        rol: creado.rol,
+      }
+    return datosUsuario
 }
 }
 

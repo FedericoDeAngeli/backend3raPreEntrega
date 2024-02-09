@@ -1,12 +1,11 @@
-import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
+import passport from 'passport'
+import { Strategy } from 'passport-local'
+import { authService } from '../services/userServices.js'
 
-import { authService, userService } from "../services/userServices.js";
-
-passport.use('register', new LocalStrategy({
-    passReqToCallback: true,
-    usernameField: 'email'
-  },
+passport.use('register', new Strategy({
+  passReqToCallback: true,
+  usernameField: 'email'
+},
   async (req, _u, _p, done) => {
     try {
       const datosUsuario = await authService.registerUser(req.body)
@@ -16,37 +15,25 @@ passport.use('register', new LocalStrategy({
     }
   }))
 
-  passport.use('login', new LocalStrategy({
-    usernameField: "email"
-  }, async (email, password, done) => {
-    try {
-      const datosUsuario = await authService.authenticateUser(email, password)
-      return done(null, datosUsuario)
-    } catch (error) {
-       return done(null, false, error.message)
-    }
-  }))
-
-// passport.serializeUser((user, next)=>{next(null, user)});
-// passport.deserializeUser((user, next)=>{next(null, user)});
-
-passport.serializeUser((user, done) => {
-  done(null, user._id); // Utiliza un identificador único, como el _id de MongoDB
-});
-
-passport.deserializeUser(async (id, done) => {
+passport.use('login', new Strategy({
+  usernameField: 'email'
+}, async (email, password, done) => {
   try {
-      const user = await userService.getUser(id);
-      done(null, user);
+    const datosUsuario = await authService.authenticateUser(email, password)
+    return done(null, datosUsuario)
   } catch (error) {
-      done(error, null);
-  }})
+    return done(null, false, error.message)
+  }
+}))
+
+passport.serializeUser((user, next) => { next(null, user) })
+passport.deserializeUser((user, next) => { next(null, user) })
 
 const passportInitialize = passport.initialize()
-const passportSession = passport.session();
+const passportSession = passport.session()
 
 export function autenticacion(req, res, next) {
-    passportInitialize(req, res, ()=> {
-        passportSession(req, res, next);
-    })
+  passportInitialize(req, res, () => {
+    passportSession(req, res, next)
+  })
 }

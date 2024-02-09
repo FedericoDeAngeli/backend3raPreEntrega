@@ -1,19 +1,19 @@
 import passport from "passport"
 
-export function handlePost(req, res, next) {
-   
+export function handlePost() {
     passport.authenticate('login', {
         failWithError: true
-    })(req, res, next, function (error, user, info) {
-        if (error) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'login failed',
-                error: error.message
-            });
-        }
-
-       
-        res.send("Ok");
-    });
-}
+      }),
+      function (req, res) {
+        res.status(201).json({ status: 'success', payload: req.user })
+      },
+      function (error, req, res, next) {
+        res
+          .status(401)
+          .json({
+            status: 'error',
+            message: 'login failed'
+          })
+      }
+    }
+    
