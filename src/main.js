@@ -16,6 +16,8 @@ console.log("Conectado a base de datos")
 
 const app = express()
 
+
+
 app.use(sesiones)
 app.use(autenticacion)
 
