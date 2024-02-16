@@ -7,6 +7,7 @@ class ProductRepository{
     }
 
     async getProduct(id){
+        console.log("product repostiroy")
         return await productDAOModel.readOne(id)
     }
 

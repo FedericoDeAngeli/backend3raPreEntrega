@@ -22,6 +22,7 @@ passport.use('login', new Strategy({
 }, async (email, password, done) => {
   try {
     const datosUsuario = await UserManager.autenticar(email, password)
+    console.log(datosUsuario)
     done(null, datosUsuario)
   } catch (error) {
     return done(null, false, error.message)

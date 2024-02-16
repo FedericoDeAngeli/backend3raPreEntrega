@@ -1,4 +1,6 @@
 import { dbProductos } from "../models/productModel.js"
+import CustomError from "../services/errors/customErrors.js"
+import EError from "../services/errors/enums.js"
 
 export class productDAO {
     async create(data){
@@ -7,8 +9,17 @@ export class productDAO {
     }
 
     async readOne(id){
+        console.log("product DAO")
+
         const product = await dbProductos.findById(id)
-        if(!product) throw new Error ("Cart not found")
+        if(!product) {
+            CustomError.createError({
+                name: "Product not found",
+                cause: "Invalidad Id",
+                message: "Product not found",
+                code: EError.INVALID_VALUE
+            })
+        }
         return product
     }
 

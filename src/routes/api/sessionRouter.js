@@ -8,6 +8,7 @@ sessionRouter.post("/", passport.authenticate('login', {
     failWithError: true
   }),
   function (req, res) {
+    console.log("post session")
     res.status(201).json({ status: 'success', payload: req.user })
   },
   function (error, req, res, next) {

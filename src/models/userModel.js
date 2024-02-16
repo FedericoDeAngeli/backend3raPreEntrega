@@ -4,6 +4,7 @@ import { comparePass, hashear } from "../utils/criptografia.js"
 
 
 
+
 const collection = "usuarios"
 
 export const UserSchema = new Schema({
@@ -32,18 +33,11 @@ export const UserSchema = new Schema({
       return datosUsuario
     },
     autenticar: async function (username, password) {
-
+     
       let datosUsuario
 
-      if (isAdmin(username, password)) {
-        datosUsuario = {
-          email: 'admin',
-          nombre: 'admin',
-          apellido: 'admin',
-          rol: 'admin'
-        }
-      } else {
-        const usuario = await mongoose.model(collection).findOne({ email: username }).lean()
+     const usuario = await mongoose.model(collection).findOne({ username: username })
+     console.log(usuario)
 
         if (!usuario) {
           throw new Error('usuario no encontrado')
@@ -59,7 +53,7 @@ export const UserSchema = new Schema({
           apellido: usuario['apellido'],
           rol: 'usuario'
         }
-      }
+      
 
       if (!datosUsuario) {
         throw new Error('usuario no encontrado')

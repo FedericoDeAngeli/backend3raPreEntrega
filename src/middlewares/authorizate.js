@@ -29,3 +29,6 @@ export function soloUser(roles = []) {
     next();
   };
 
+  export function isAdmin(username, password) {
+    return username === 'adminCoder@coder.com' && password === 'adminCod3r123'
+  }

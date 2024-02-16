@@ -6,6 +6,7 @@ class ProductService{
     }
 
     async getProduct(id){
+        console.log("productServices")
         return await productRepository.getProduct(id)
     }
 
