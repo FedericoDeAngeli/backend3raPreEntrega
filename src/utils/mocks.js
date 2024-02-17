@@ -1,7 +1,9 @@
 import { UserManager } from "../models/userModel.js"
 import { dbProductos } from "../models/productModel.js"
 import { dbCart } from "../models/cartModel.js"
+import { hashear } from "./criptografia.js"
 import { faker } from "@faker-js/faker"
+import passport from "passport"
  
 export const users = [
     { name: "Federico", lastname: "De Angeli", email: "fd@mail.com", age: 33, password: "123", rol: "admin"},
@@ -50,7 +52,14 @@ const carts = [{_id: "123", product: [{pid: "a3", quantity:5}, {pid: "a1", quant
 
  export async function initialize(){
      await UserManager.deleteMany({})
-  await UserManager.insertMany(users)
+     for (const p of users) {
+        p.password = hashear(p.password)
+     }
+   await UserManager.insertMany(users)
+//   for (const p of usersMocks) {
+//     const hashPass = hashear(p.password)
+//     return hashPass
+// }
  console.log("Registro Usuarios actualizado")
 
  await dbProductos.deleteMany({})
@@ -60,4 +69,6 @@ const carts = [{_id: "123", product: [{pid: "a3", quantity:5}, {pid: "a1", quant
  await dbCart.deleteMany({})
  await dbCart.insertMany(carts),
  console.log("Registro de Carts actualizado")
+
+
  }

@@ -27,4 +27,4 @@ class EmailService{
     
 }
 
-export const emailService = EmailService()
+export const emailService = new EmailService()

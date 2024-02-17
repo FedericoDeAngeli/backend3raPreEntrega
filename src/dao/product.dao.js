@@ -4,7 +4,7 @@ import EError from "../services/errors/enums.js"
 
 export class productDAO {
     async create(data){
-        const product = await dbProductos.create(data).toObject()
+        const product = await dbProductos.create(data)
         return product
     }
 

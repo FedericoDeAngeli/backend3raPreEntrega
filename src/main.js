@@ -13,6 +13,7 @@ import { autenticacion } from "./middlewares/passport.js";
 import CustomError from "./services/errors/customErrors.js";
 import EError from "./services/errors/enums.js";
 
+
 await mongoose.connect(MONGODB_CNX_STRING)
 if(!mongoose.connect(MONGODB_CNX_STRING)){
     CustomError.createError({
@@ -28,11 +29,12 @@ console.log("Conectado a base de datos")
 
 const app = express()
 
+app.use(sesiones)
+app.use(autenticacion)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(sesiones)
-app.use(autenticacion)
+
 
 
 

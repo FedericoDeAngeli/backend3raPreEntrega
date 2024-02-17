@@ -5,7 +5,7 @@ import EError from "../services/errors/enums.js"
  class cartDao{
 
     async create(data){
-        const cart = await dbCart.create(data).toObject()
+        const cart = await dbCart.create(data)
         return cart    
 
     }

@@ -24,21 +24,25 @@ class UserService{
 };
 
 class AuthService{
-    async authenticateUser(username, password){
+    async authenticateUser (email, password) {
+     
         let datosUsuario
-
-        const usuario = await userRepository.getUser({email: username}).lean()
-        if(!usuario){
-        throw new Error ("Usuario incorrecto")    }
-        if(comparePass(password, usuario.password)){
-            throw new Error ("Contraseña incorrecta")
-        }
-
-        datosUsuario = {
+  
+       const usuario = await userRepository.getUser({ email })
+  
+          if (!usuario) {
+            throw new Error('usuario no encontrado')
+          }
+  
+          if (!comparePass(password, usuario['password'])) {
+            throw new Error('las contraseñas no coinciden')
+          }
+  
+          datosUsuario = {
             email: usuario['email'],
             name: usuario['name'],
             lastname: usuario['lastname'],
-            rol: usuario['rol']
+            rol: usuario['rol'],
           }
         
   
@@ -47,19 +51,45 @@ class AuthService{
         }
   
         return datosUsuario
-    }
-async registerUser(data){
-     data.password = hashear(data.password)
-    const creado = await userRepository.createUser(data)
-    
-    const datosUsuario = {
-        email: creado.email,
-        name: creado.name,
-        lastname: creado.lastname,
-        rol: creado.rol,
+        
       }
+
+
+async registerUser(reqBody) {
+    reqBody.password = hashear(reqBody.password)
+    const creado = await userRepository.createUser(reqBody)
+
+    const datosUsuario = {
+      email: creado.email,
+      name: creado.name,
+      lastname: creado.lastname,
+      rol: creado.rol
+    }
+
     return datosUsuario
-}
+  }
+
+  async resetearContrasenia (email, password) {
+    const newPassword = hashear(password)
+
+    const actualizado = await userRepository.updateUser(
+      { email },
+      { $set: { password: newPassword } },
+      // @ts-ignore
+      { new: true }
+    )
+
+    if (!actualizado) {
+      throw new Error('usuario no encontrado')
+    }
+
+    return {
+      email: actualizado['email'],
+      name: actualizado['name'],
+      lastname: actualizado['lastname'],
+      rol: actualizado['rol'],
+    }
+  }
 }
 
 export const userService = new UserService();

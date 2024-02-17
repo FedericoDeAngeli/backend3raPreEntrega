@@ -2,8 +2,8 @@ import { TicketManager } from "../models/ticketModel.js";
 
 class TicketDAO {
 
-    async create(data){
-        const ticket = await TicketManager.create(data).toObject();
+    async createTicket(data){
+        const ticket = await TicketManager.create(data);
         return ticket;
     }
 

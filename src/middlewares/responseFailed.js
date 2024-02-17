@@ -31,7 +31,7 @@ export function responseFailed(req, res, next) {
             .status(500)
             .json({
                status: 'logout error', 
-               body: err
+               body: "error"
             })
         }
     res['failedValidation'] = function (message) {
