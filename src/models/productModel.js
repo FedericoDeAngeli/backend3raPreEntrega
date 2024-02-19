@@ -8,9 +8,9 @@ export const ProductSchema = new Schema({
     description: {type: String, required: true},
     price: {type: Number, required: true},
     thumbnail: {type: String, required:true},
-    code: {type: String, unique: true, required: true},
-    stock: {type: Number, },
-    status: {type: String, },
+    code: {type: String, required: true},
+    stock: {type: Number },
+    status: {type: String, default: "true" },
     category: {type: String, required: true},
 },{
     strict: "throw",

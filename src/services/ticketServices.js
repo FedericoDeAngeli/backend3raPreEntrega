@@ -3,7 +3,7 @@ import { cartService } from "./cartServices.js";
 
 class TicketService{
 
-    async createTicket(idCart){
+    async createTicket(){
         
         const cart = await cartService.getCart(idCart)
         if(!cart) throw new Error("cart not found")

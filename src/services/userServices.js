@@ -43,6 +43,7 @@ class AuthService{
             name: usuario['name'],
             lastname: usuario['lastname'],
             rol: usuario['rol'],
+            cart: usuario['cart'],
           }
         
   

@@ -1,18 +1,17 @@
 import { Router } from "express";
 import { handleDelete, handleGet, handlePost, handlePostMocK, handlePut } from "../../controllers/productController.js";
-import { dbProductos } from "../../models/productModel.js";
-import CustomError from "../../services/errors/customErrors.js";
-import EError from "../../services/errors/enums.js";
+ import { soloAdmin } from "../../middlewares/authorizate.js";
+
 
 export const productRouter = Router();
 
 productRouter.get("/", handleGet)
 productRouter.get("/:id", handleGet)
 
-productRouter.post("/", handlePost)
+productRouter.post("/", soloAdmin, handlePost )
 productRouter.post("/mockingProducts", handlePostMocK)
 
-productRouter.put("/:id", handlePut)
+productRouter.put("/:id", soloAdmin, handlePut)
 
-productRouter.delete("/:id", handleDelete)
+productRouter.delete("/:id", soloAdmin, handleDelete)
 

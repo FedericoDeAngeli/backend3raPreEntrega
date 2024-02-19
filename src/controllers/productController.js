@@ -50,7 +50,7 @@ export async function handleDelete(req, res, next) {
 
 export async function handlePostMocK (req, res) {
     const products = []
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 50; index++) {
         products.push({
             _id: faker.string.uuid(),
             title: faker.commerce.product(),
