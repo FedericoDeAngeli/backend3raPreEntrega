@@ -1,6 +1,7 @@
 import { dbCart } from "../models/cartModel.js"
 import CustomError from "../services/errors/customErrors.js"
 import EError from "../services/errors/enums.js"
+import { logger } from "../utils/logger.js"
 
  class cartDao{
 
@@ -15,7 +16,7 @@ import EError from "../services/errors/enums.js"
         if(!cart)   CustomError.createError({
             name: "Cart not found",
             cause: "Invalidad Id",
-            message: "Cart not found",
+            message: logger.error("Cart not found"),
             code: EError.INVALID_VALUE
         })
         return cart

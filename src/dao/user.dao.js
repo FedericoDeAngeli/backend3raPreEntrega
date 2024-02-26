@@ -1,6 +1,7 @@
 import { UserManager } from "../models/userModel.js";
 import CustomError from "../services/errors/customErrors.js";
 import EError from "../services/errors/enums.js";
+import { logger } from "../utils/logger.js";
 
 class UserDAO {
     async  create(data){
@@ -13,7 +14,7 @@ class UserDAO {
         if(!user)   CustomError.createError({
             name: "User not found",
             cause: "Invalidad Data",
-            message: "User not found",
+            message: logger.error("User not found"),
             code: EError.INVALID_VALUE
         })
 

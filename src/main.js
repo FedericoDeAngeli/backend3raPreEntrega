@@ -12,6 +12,8 @@ import { autenticacion } from "./middlewares/passport.js";
 
 import CustomError from "./services/errors/customErrors.js";
 import EError from "./services/errors/enums.js";
+import { addLogger } from "./utils/logger.js";
+import { logger } from "./utils/logger.js";
 
 
 await mongoose.connect(MONGODB_CNX_STRING)
@@ -23,12 +25,12 @@ if(!mongoose.connect(MONGODB_CNX_STRING)){
         code: EError.DATABASE_ERROR
     })
 }
-console.log("Conectado a base de datos")
-
+logger.info("Connected to Mongo")
 
 
 const app = express()
 
+app.use(addLogger)
 app.use(sesiones)
 app.use(autenticacion)
 app.use(express.json())
@@ -44,8 +46,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api", apiRouter)
 
 
-const server = app.listen(PORT, () => {
-    console.log("Conectado al puerto 8080")
+
+ app.listen(PORT, () => {
+    logger.info("listening on port 8080")
 })
 
  initialize()

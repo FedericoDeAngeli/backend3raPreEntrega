@@ -1,8 +1,8 @@
 import { productService } from "../services/productServices.js"
 import { dbProductos } from "../models/productModel.js"
 import { faker } from "@faker-js/faker"
-import CustomError from "../services/errors/customErrors.js"
-import EError from "../services/errors/enums.js"
+
+import { logger } from "../utils/logger.js"
 
 export async function handleGet( req, res, next){
    try {
@@ -15,6 +15,7 @@ export async function handleGet( req, res, next){
         res.json(product)
     }
    } catch (error) {
+    logger.warning("Error en handleGet Productos"),
     res.json(error)
    }
 }
@@ -25,6 +26,7 @@ export async function handleGet( req, res, next){
             res.json(await productService.createProduct(req.body))
         
     } catch (error) {
+        logger.warning("Error en handlePost Productos"),
         res.json(error)
     }
    }
@@ -35,6 +37,7 @@ export async function handleGet( req, res, next){
     res.send("Updated product")
 
     } catch (error) {
+        logger.warning("Error en handlePut Productos"),
         res.json(error)
    }
 }
@@ -44,6 +47,7 @@ export async function handleDelete(req, res, next) {
         await productService.deleteProduct(req.params.id)
         res.send("Delete ok")
     } catch (error) {
+        logger.warning("Error en handleDelete Productos"),
         res.json(error)
     }
 }

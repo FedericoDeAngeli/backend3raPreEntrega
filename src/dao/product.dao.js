@@ -1,6 +1,8 @@
 import { dbProductos } from "../models/productModel.js"
 import CustomError from "../services/errors/customErrors.js"
 import EError from "../services/errors/enums.js"
+import { logger } from "../utils/logger.js"
+
 
 export class productDAO {
     async create(data){
@@ -9,14 +11,13 @@ export class productDAO {
     }
 
     async readOne(id){
-        console.log("product DAO")
 
         const product = await dbProductos.findById(id)
         if(!product) {
             CustomError.createError({
                 name: "Product not found",
                 cause: "Invalidad Id",
-                message: "Product not found",
+                message: logger.error("Datos ingresados inválidos"),
                 code: EError.INVALID_VALUE
             })
         }

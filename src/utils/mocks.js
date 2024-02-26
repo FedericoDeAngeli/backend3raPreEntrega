@@ -5,6 +5,7 @@ import { hashear } from "./criptografia.js"
 
 import { faker } from "@faker-js/faker"
 import passport from "passport"
+import { logger } from "./logger.js"
  
 export const users = [
     { name: "Federico", lastname: "De Angeli", email: "fd@mail.com", age: 33, password: "123", rol: "admin"},
@@ -61,15 +62,14 @@ const carts = [{_id: "123", product: [{pid: "a3", quantity:5}, {pid: "a1", quant
 //     const hashPass = hashear(p.password)
 //     return hashPass
 // }
- console.log("Registro Usuarios actualizado")
+ logger.debug("Registro Usuarios actualizado")
 
  await dbProductos.deleteMany({})
  await dbProductos.insertMany(products)
- console.log("Registro de Productos actualizado")
+ logger.debug("Registro de Productos actualizado")
 
  await dbCart.deleteMany({})
  await dbCart.insertMany(carts),
- console.log("Registro de Carts actualizado")
-
+logger.debug("Registro de Carts actualizado")
 
  }
