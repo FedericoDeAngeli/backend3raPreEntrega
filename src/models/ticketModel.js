@@ -4,9 +4,9 @@ import {randomInt, randomUUID} from "crypto"
 const collection = "ticket"
 
 export const TicketSchema = new Schema({
-    _id: {type: String, default: randomUUID()},
-    code: {type: Number, default: randomInt(10, 1000 )},
-    purchaseDateTime: {type: String, default: Date.now()},
+    _id: {type: String},
+    code: {type: Number},
+    purchaseDateTime: {type: String},
     amount: {type: Number},
     purchaser: {type: String}
 },{

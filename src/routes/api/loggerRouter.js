@@ -4,6 +4,7 @@ import { logger } from "../../utils/logger.js";
 export const loggerRouter = Router()
 
 loggerRouter.get("/", function(req, res) {
+// @ts-ignore
 logger.fatal("Probando logger Fatal"),
 logger.error("Probando logger Error"),
 logger.warning("Probando logger Warning"),

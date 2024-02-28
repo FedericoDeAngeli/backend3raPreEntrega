@@ -1,9 +1,17 @@
 import { TicketManager } from "../models/ticketModel.js";
+import { emailService } from "../services/emailServices.js";
 import { ticketService } from "../services/ticketServices.js";
+import {randomUUID,  randomInt } from "crypto"
+import { logger } from "../utils/logger.js";
+import { smsService } from "../services/smsServicesTwilio.js";
+import { ADMIN_PHONE_NUMBER } from "../config.js";
+
+
 
 export async function handlePost( req, res, next ) {
     try {
         const userInfo = req.user.cart
+        const purchaser = req.user.email
         
        async function  calcularTotalCarrito(carro) {
             let total = 0;
@@ -20,12 +28,30 @@ export async function handlePost( req, res, next ) {
           // Obtener el total del carrito
           const totalCarrito = await calcularTotalCarrito(userInfo); 
             
+          const ticket = {
+            _id: randomUUID(),
+            code: randomInt(10, 1000 ),
+            purchaseDateTime: new Date(),
+            amount: totalCarrito,
+            purchaser: purchaser
+
+          }
              
        
-        const ticket = await TicketManager.create({amount: totalCarrito}, {purchaser : req.user.email} )
-        res.json(ticket) ;
+       await TicketManager.create(ticket)
+
+       const destinatario = "fdeangeli_90@hotmail.com"
+         const asunto = "Compra realizada"
+         const mensaje = ticket
+    
+         
+      // await emailService.sendEmail(destinatario, asunto, ticket)
+
+      //  await smsService.send(ADMIN_PHONE_NUMBER, ticket)
+        res.json(ticket)
+        
     } catch (error) {
-        console.log("mal")
-        res.send(error)
+      logger.error("Error en la compra")
+      res.send(error)
     }
 }
