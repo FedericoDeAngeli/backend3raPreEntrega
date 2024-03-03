@@ -6,6 +6,7 @@ import { productRouter } from "./productRouter.js";
 import { ticketRouter } from "./ticketRouter.js";
 import { loggerRouter } from "./loggerRouter.js";
 import { emailRouter } from "./emailRouter.js";
+
 export const apiRouter = Router()
 
 apiRouter.use("/cart", cartRouter)

@@ -1,0 +1,84 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id del producto
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: descripcion del producto
+        price:
+          type: number
+          description: precio del producto en pesos argentinos
+        thumbnail:
+          type: string
+          description: ruta a la imagen del producto
+        code:
+          type: string
+          description: código único del producto
+        stock:
+          type: numer
+          description: cantidad del producto en stock
+        status:
+          type: string
+          description: default true
+        category:
+          type: string
+          description: categoría del producto
+      example:
+        _id: a1
+        title: Curcuma
+        description: India
+        price: 100
+        thumbnail: /images/curcuma.jpg
+        code: 1
+        stock: 10
+        status: true
+        category: especias
+  requestBody:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id del producto
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: descripcion del producto
+        price:
+          type: number
+          description: precio del producto en pesos argentinos
+        thumbnail:
+          type: string
+          description: ruta a la imagen del producto
+        code:
+          type: string
+          description: código único del producto
+        stock:
+          type: numer
+          description: cantidad del producto en stock
+        status:
+          type: string
+          description: default true
+        category:
+          type: string
+          description: categoría del producto
+      example:
+        _id: a1
+        title: Curcuma
+        description: India
+        price: 100
+        thumbnail: /images/curcuma.jpg
+        code: 1
+        stock: 10
+        status: true
+        category: especias
+        

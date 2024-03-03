@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { initialize } from "./utils/mocks.js";
 import { faker } from "@faker-js/faker";
+import swaggerUiExpress from "swagger-ui-express"
 
 
 import { apiRouter } from "./routes/api/apiRouter.js";
@@ -14,6 +15,7 @@ import CustomError from "./services/errors/customErrors.js";
 import EError from "./services/errors/enums.js";
 import { addLogger } from "./utils/logger.js";
 import { logger } from "./utils/logger.js";
+import { specs } from "./utils/swagger.js";
 
 
 await mongoose.connect(MONGODB_CNX_STRING)
@@ -29,7 +31,7 @@ logger.info("Connected to Mongo")
 
 
 const app = express()
-
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs) )
 app.use(addLogger)
 app.use(sesiones)
 app.use(autenticacion)
