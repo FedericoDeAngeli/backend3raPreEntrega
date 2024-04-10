@@ -29,14 +29,24 @@ export class productDAO {
         return product
     }
 
-    async updateOne(id, data){
+    async updateOne(pid, data){
        
-       const updatedProduct = await dbProductos.findByIdAndUpdate(id,
+       const updatedProduct = await dbProductos.findByIdAndUpdate(pid,
            {$set: data},
            {new: true}).lean()
 
            return updatedProduct
     }
+
+    async updateStock(pid, data){
+       
+        const updatedProduct = await dbProductos.findByIdAndUpdate(pid,
+            {$set: {stock: data}},
+            {new: true}).lean()
+ 
+            return updatedProduct
+     }
+
 
     async deleteOne(id){
        await dbProductos.findByIdAndDelete(id)

@@ -6,16 +6,23 @@ class UserService{
         return await userRepository.createUser(data)
     }
 
-    async getUser(id){
-        return await userRepository.getUser(id)
+    async getUserbyId(_id){
+      return await userRepository.getUserById(_id)
+  }
+    async getUser(data){
+        return await userRepository.getUser(data)
     }
 
     async getAllUsers(){
         return await userRepository.getAllUsers()
     }
 
-    async updateUser(id, data){
-        return await userRepository.updateUser(id, data)
+    async updateUser(_id, data){
+        return await userRepository.updateUser(_id, data)
+    }
+
+    async deleteAll(){
+      return await userRepository.deleteAll()
     }
 
     async deleteUser(id){
@@ -24,49 +31,54 @@ class UserService{
 };
 
 class AuthService{
-    async authenticateUser (email, password) {
-     
-        let datosUsuario
-  
-       const usuario = await userRepository.getUser({ email })
-  
-          if (!usuario) {
-            throw new Error('usuario no encontrado')
-          }
-  
-          if (!comparePass(password, usuario['password'])) {
-            throw new Error('las contraseñas no coinciden')
-          }
-  
-          datosUsuario = {
-            email: usuario['email'],
-            name: usuario['name'],
-            lastname: usuario['lastname'],
-            rol: usuario['rol'],
-            cart: usuario['cart'],
-          }
+  async authenticateUser(email, password) {
+    let datosUsuario;
+
+    const usuario = await userRepository.getUser({ email });
+
+    if (!usuario) {
+        throw new Error('Usuario no encontrado');
+    }
+
+    if (!comparePass(password, usuario.password)) {
+        throw new Error('Las contraseñas no coinciden');
+    }
+
+    // Actualizar el valor de lastLogin en el documento del usuario
+    usuario.lastlogin = new Date();
+    
+    // Guardar los cambios actualizados en la base de datos
+    await usuario.save();
+
+    datosUsuario = {
+        email: usuario.email,
+        name: usuario.name,
+        lastname: usuario.lastname,
+        rol: usuario.rol,
+        cart: usuario.cart,
+        lastlogin: usuario.lastlogin
+    };
+
+    console.log(datosUsuario);
+
+    return datosUsuario;
+}
+
         
-  
-        if (!datosUsuario) {
-          throw new Error('usuario no encontrado')
-        }
-  
-        return datosUsuario
-        
-      }
+      
 
 
 async registerUser(reqBody) {
+  
     reqBody.password = hashear(reqBody.password)
-    const creado = await userRepository.createUser(reqBody)
 
+    const creado = await userRepository.createUser(reqBody)
     const datosUsuario = {
       email: creado.email,
       name: creado.name,
       lastname: creado.lastname,
       rol: creado.rol
     }
-
     return datosUsuario
   }
 

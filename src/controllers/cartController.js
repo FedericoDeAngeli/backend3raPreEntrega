@@ -17,7 +17,8 @@ export async function handleGet(req, res, next) {
 export async function handlePost (req, res, next) {
     try {
         if(req.params.id && req.params.pid ){
-           const newCart = await cartService.updateCart(req.params.id, req.params.pid)
+            const quantity = req.body.quantity
+           const newCart = await cartService.updateCart(req.params.id, req.params.pid, quantity)
             res.json(newCart);
         }else{
        const carts = await cartService.createCart()
@@ -31,7 +32,7 @@ export async function handlePost (req, res, next) {
 export async function handleDelete (req, res, next) {
     try {
         if(req.params.pid){
-            await cartService.deleteProductInCart(req.params.pid)
+            await cartService.deleteProductInCart(req.params.id, req.params.pid)
             res.send("Delete product from cart")
         }else{
         await cartService.deleteCart(req.params.id)

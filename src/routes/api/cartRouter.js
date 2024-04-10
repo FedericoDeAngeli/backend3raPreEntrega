@@ -11,7 +11,7 @@ cartRouter.get("/:id", handleGet)
 cartRouter.post("/", soloUser, handlePost)
 cartRouter.post("/:id/product/:pid", soloUser, handlePost)
 cartRouter.post("/:id/purchase", async (req, res) => {
-    const cartId = await dbCart.findById(req.params.id).populate("product.pid").lean()
+    const cartId = await dbCart.findById(req.params.id).populate("product.pid")
     if(!cartId) throw new Error("Cart not found")
 
     if(!req.user) throw new Error ("You must be logged in")

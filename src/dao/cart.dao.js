@@ -27,33 +27,48 @@ import { logger } from "../utils/logger.js"
         return carts
     }
 
-    async updateOne(id, pid){
+    async updateOne(id, pid, quantity){
         const cart = await dbCart.findById(id).lean()
         if(!cart) throw new Error ("Cart not found")
         const productInCart =  cart.product.find(product => product.pid === pid)
         if(!productInCart){
+            if(!quantity){
             await dbCart.findByIdAndUpdate(id,
                 {$push: {product: {pid: pid, quantity: 1}}},
                 {new: true}).lean()
+            }else{
+                await dbCart.findByIdAndUpdate(id,
+                    {$push: {product: {pid: pid, quantity: quantity}}},
+                    {new: true}).lean()
+            }
+
         }else{
+                     
+            if(!quantity){
            const updatedCart = await dbCart.findOneAndUpdate( 
             { _id: id, 'product.pid': pid },
            { $inc: { 'product.$.quantity': 1 } },
            { new: true }).lean()
+        }else{
+            const updatedCart = await dbCart.findOneAndUpdate( 
+                { _id: id, 'product.pid': pid },
+               { $inc: { 'product.$.quantity': quantity } },
+               { new: true }).lean()
+        }
            return updatedCart
         }
     }
 
-    async deleteProd(id, pid){
-        const cart = await dbCart.findById(id)
+    async deleteProd(_id, pid){
+        const cart = await dbCart.findById(_id)
         if(!cart) throw new Error ("Cart not found")
 
         const  productInCart = cart.product.find(product => product.pid === pid)
         if(!productInCart) throw new Error ("Product not found")
-        
-        const updatedCart = await dbCart.findByIdAndUpdate(id,
-            { $pull: { product: { pid: pid }}},
-            { new: true }).lean()   
+        console.log(productInCart)
+        const updatedCart = await dbCart.findOneAndUpdate({ _id: _id, 'product.pid': pid },
+        { $push: { 'product.$.quantity': 0 } },
+        { new: true }).lean()
 
             return updatedCart            
     }

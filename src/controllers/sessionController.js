@@ -6,6 +6,7 @@ export function handlePost(req, res, next) {
   }),
   function (req, res) {
     console.log("post session")
+    
     res.json({ status: 'success', payload: req.user })
   },
   function (error, req, res, next) {

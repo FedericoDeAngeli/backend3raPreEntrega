@@ -15,6 +15,7 @@ export const UserSchema = new Schema({
   age: { type: Number, required: true },
   password: { type: String, required: true },
   rol: {type: String, required: true},
+  lastlogin: {type: Date, default: new Date()},
   cart: [{cid: {type: String, ref: "cart"} }]
 }, {
   strict: "throw",

@@ -3,9 +3,11 @@ import mongoose from "mongoose";
 import { initialize } from "./utils/mocks.js";
 import { faker } from "@faker-js/faker";
 import swaggerUiExpress from "swagger-ui-express"
+import {engine} from "express-handlebars"
 
 
 import { apiRouter } from "./routes/api/apiRouter.js";
+import { webRouter } from "./routes/web/webRouter.js";
 import { MONGODB_CNX_STRING, PORT } from "./config.js"
 
 import { sesiones } from "./middlewares/session.js";
@@ -31,20 +33,26 @@ logger.info("Connected to Mongo")
 
 
 const app = express()
+
+app.engine('handlebars', engine())
+app.set('views', './views')
+app.set('view engine', 'handlebars')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs) )
 app.use(addLogger)
 app.use(sesiones)
 app.use(autenticacion)
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
 
 
 
 
 
-// app.use("/", webRouter)
-// app.use("/static", express.static("./static"))
+app.use("/static", express.static("./static"))
+
+app.use("/", webRouter)
 app.use("/api", apiRouter)
 
 

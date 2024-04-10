@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { handleDelete, handleGet, handlePost, handlePut } from "../../controllers/userController.js";
+import { soloAdmin } from "../../middlewares/authorizate.js";
 
 export const userRouter = Router()
 
@@ -23,6 +24,8 @@ userRouter.post("/",  passport.authenticate('register', {
   }
 )
 
-userRouter.put("/:id", handlePut)
+userRouter.put("/:id", soloAdmin, handlePut)
 
 userRouter.delete("/:id", handleDelete)
+
+userRouter.delete("/", handleDelete)

@@ -68,8 +68,8 @@ const carts = [{_id: "123", product: [{pid: "a3", quantity:5}, {pid: "a1", quant
  await dbProductos.insertMany(products)
  logger.debug("Registro de Productos actualizado")
 
- await dbCart.deleteMany({})
- await dbCart.insertMany(carts),
-logger.debug("Registro de Carts actualizado")
+//  await dbCart.deleteMany({})
+//  await dbCart.insertMany(carts),
+// logger.debug("Registro de Carts actualizado")
 
  }

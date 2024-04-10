@@ -14,8 +14,8 @@ class CartRepository{
         return await cartDaoModel.create(data)
     }
 
-    async updateCart(id, pid){
-        return await cartDaoModel.updateOne(id, pid)
+    async updateCart(id, pid, quantity){
+        return await cartDaoModel.updateOne(id, pid, quantity)
     }
 
     async deleteCart(id){

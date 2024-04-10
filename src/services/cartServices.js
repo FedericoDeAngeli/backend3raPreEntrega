@@ -14,8 +14,8 @@ import { cartRepository} from "../repository/cartRepository.js";
         return await cartRepository.createCart(data)
     }
 
-    async updateCart(id, pid){
-        return await cartRepository.updateCart(id, pid)
+    async updateCart(id, pid, quantity){
+        return await cartRepository.updateCart(id, pid, quantity)
     }
 
     async deleteCart(id){
