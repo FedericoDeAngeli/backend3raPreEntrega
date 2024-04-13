@@ -9,7 +9,8 @@ class UserDAO {
         return user;
     }
     async getUserById(_id){
-        return await UserManager.findById(_id)
+        const user = await UserManager.findById(_id)
+        return user
     }
     async readOne(data){
             const user = await UserManager.findOne(data)

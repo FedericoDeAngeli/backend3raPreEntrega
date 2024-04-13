@@ -61,14 +61,14 @@ export async function handlePost( req, res, next ) {
        
        await TicketManager.create(ticket)
 
-       const destinatario = "fdeangeli_90@hotmail.com"
+       const destinatario = purchaser
          const asunto = "Compra realizada"
          const mensaje = ticket
     
          
-      // await emailService.sendEmail(destinatario, asunto, ticket)
+       await emailService.sendEmail(destinatario, asunto, ticket)
 
-      //  await smsService.send(ADMIN_PHONE_NUMBER, ticket)
+        await smsService.send(ADMIN_PHONE_NUMBER, ticket)
         res.json(ticket)
         
     } catch (error) {

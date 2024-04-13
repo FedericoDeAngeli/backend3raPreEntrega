@@ -70,9 +70,8 @@ export async function handleDelete(req, res, next) {
             const _id = req.params.id
             await userService.deleteUser(_id)
             res.send("Delete user successfully")
-        }
-        const usuarios = await userService.getAllUsers()
-        console.log(usuarios)
+        }else{
+            const usuarios = await userService.getAllUsers()
         const now = new Date()
         usuarios.forEach(async user => {
             const _id = user._id
@@ -84,6 +83,8 @@ export async function handleDelete(req, res, next) {
         })
         res.send("No inactive users to delete")
 
+        }
+               
 
     } catch (error) {
         res.send(error);

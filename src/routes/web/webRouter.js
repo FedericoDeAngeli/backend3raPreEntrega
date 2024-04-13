@@ -18,7 +18,10 @@ webRouter.get('/register', async (req, res) => {
 })
 
 webRouter.get('/profile/:id', async (req, res) => {
-  const user = await userService.getUserbyId(req.params.id)
+  const _id = req.params.id
+console.log(_id, typeof _id)
+  const user = await userService.getUserbyId(_id)
+  console.log(user)
   res.render('profile.handlebars', {
     pageTitle: 'Perfil',
     user: user,

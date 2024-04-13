@@ -1,58 +1,70 @@
 
  
-  <h1>Actualiza los datos del usuario</h1>
+  <h1>Actualizar Rol o eliminar usuario</h1>
 
 <form id="updateUserForm">
-    <!-- Agregar campo oculto para el método PUT -->
-    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+    {{!-- <!-- Agregar campo oculto para el método PUT -->
+    <input type="hidden" name="_method" value="PUT"> --}}
 
     <!-- Agregar campo oculto para el ID del usuario -->
     <label for="_id">ID</label>
     <input type="text" id="_id" name="_id">
 
-    <label for="name">Nombre:</label>
-    <input type="text" id="name" name="name"><br><br>
+    <label for="rol">Rol:</label>
+    <select name="rol" id="rol">
+      <option value="admin">Administrador</option>
+      <option value="user">Usuario</option>
+      <option value="premium">Premium</option>
+    </select>
 
-    <label for="lastname">Apellido:</label>
-    <input type="text" id="lastname" name="lastname"><br><br>
-
-    <label for="email">Correo electrónico:</label>
-    <input type="email" id="email" name="email"><br><br>
-
-    <label for="age">Edad:</label>
-    <input type="number" id="age" name="age"><br><br>
-
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password"><br><br>
-
-    <button type="submit">Actualizar</button>
+    <button type="submit">Actualizar Rol</button>
+    <button type="button" id="deletebutton">Borrar usuario</button>
 </form>
 
 <script>
   const formUpdater = document.getElementById('updateUserForm');
-  console.log(formUpdater);
 
-  formUpdater?.addEventListener('submit', async event => {
+  formUpdater.addEventListener('submit', async event => {
     event.preventDefault();
 
     const formData = new FormData(formUpdater);
     const userId = formData.get('_id');
+    const selectedRole = formData.get('rol');
 
     const response = await fetch(`/api/usuarios/${userId}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: new URLSearchParams(formData)
+      body: JSON.stringify({ rol: selectedRole })
     });
 
-    console.log(response.status);
-
     if (response.status === 200) {
-      window.location.href = `/profile/${userId}`
+      window.location.href = `/profile/${userId}`;
     } else {
       const error = await response.json();
       alert(error.message);
     }
   });
+
+const deleteButton = document.getElementById('deletebutton');
+  deleteButton.addEventListener("click", async event => {
+    event.preventDefault();
+
+ const formData = new FormData(formUpdater);
+    const userId = formData.get('_id');
+    const response = await fetch(`/api/usuarios/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (response.status === 200) {
+      alert("Usuario eliminado correctamente");
+      window.location.href = "/";
+    } else {
+      const error = await response.json();
+      alert(error.message);
+    }
+  })
 </script>

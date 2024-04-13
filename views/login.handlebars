@@ -1,6 +1,6 @@
 <h1>Login</h1>
 
-<form action="/api/sesiones" method="post">
+<form id="LoginForm">
   <div class="form-group">
     <label for="email">Email</label>
     <input type="text" id="email" name="email" placeholder="email">
@@ -11,3 +11,31 @@
   </div>
   <button type="submit">Login</button>
 </form>
+
+<script>
+  const formLogin = document.getElementById('LoginForm');
+
+  formLogin?.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const formData = new FormData(formLogin);
+    const userId = formData.get('_id');
+
+    const response = await fetch(`/api/sesiones`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams(formData)
+    });
+
+    console.log(response.status);
+
+    if (response.status === 201) {
+      window.location.href = `/current`
+    } else {
+      const error = await response.json();
+      alert(error.message);
+    }
+  });
+</script>

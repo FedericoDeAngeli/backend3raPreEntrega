@@ -34,7 +34,11 @@ logger.info("Connected to Mongo")
 
 const app = express()
 
-app.engine('handlebars', engine())
+app.engine('handlebars', engine({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true
+      }
+}))
 app.set('views', './views')
 app.set('view engine', 'handlebars')
 
