@@ -22,6 +22,10 @@ class TicketService{
         
     }
 
+    async getTicket(id){
+        return await ticketRepository.getTicket(id)
+    }
+
     }
 
     export const ticketService = new TicketService();

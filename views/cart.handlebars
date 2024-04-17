@@ -1,0 +1,57 @@
+<h1>Carrito nro: {{cartId}}</h1>
+
+<ul>
+        {{#each products}}
+        <li>
+            <strong>Nombre: </strong>{{this.pid.title}}<br>
+            <strong>Cantidad: </strong>{{this.quantity}}<br>
+         
+        
+        </li>
+        {{/each}}
+         <form id="purchaseForm">
+            <button id="sale">Seguir comprando</button>
+            <button id="finishButton">Finalizar compra</button>
+          </form>
+    </ul>
+
+<script>
+    const purchaseForm = document.getElementById("purchaseForm");
+    const cartId = "{{cartId}}"
+
+
+   const saleButton = purchaseForm.querySelector("#sale")
+   const finishButton = purchaseForm.querySelector("#finishButton")
+
+   saleButton.addEventListener("click", async () => {
+    event.preventDefault();
+       window.location.href = `/api/cart/${cartId}`;
+   })
+
+   finishButton.addEventListener("click", async () => {
+    event.preventDefault();
+        const response = await fetch(`/api/cart/{{cartId}}/purchase`, {
+                method: 'POST',
+                
+            })
+        if (response.ok) {
+        // Si la compra se realiza con éxito, hacer otro fetch para crear el ticket
+        const ticketResponse = await fetch("/api/tickets", {
+            method: 'POST'
+        });
+
+        if (ticketResponse.ok) {
+    const data = await ticketResponse.json();
+   
+      const ticketId = data._id;  
+            
+      window.location.href = `/ticket/${ticketId}`;
+        } else {
+            console.error('Error al crear el ticket');
+        }
+    } else {
+        console.error('Error al generar la compra');
+    }
+       
+   })
+</script>

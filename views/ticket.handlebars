@@ -1,0 +1,16 @@
+<h1>Ticket</h1>
+
+<p>Usuario: {{user}}</p>
+
+<ul>
+  {{#each cart.product}}
+  <li>
+    <strong>Nombre: </strong>{{this.pid.title}}<br>
+    <strong>Cantidad: </strong>{{this.quantity}}<br>
+    <!-- Aquí puedes mostrar más detalles del producto si lo necesitas -->
+  </li>
+  {{/each}}
+
+      <strong>Total: {{ticket.amount}}</strong>
+
+</ul>

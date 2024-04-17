@@ -8,3 +8,48 @@
     <li>Rol:{{user.rol}} </li>
     <li>Carrito:{{user.cart}}</li>
   </ul>
+
+<form id="newCart">
+  <button type="submit">Crear carrito</button>
+  <button id="logoutbtn">Cerrar Sesión</button>
+</form>
+
+<script>  
+  const formNewCart = document.getElementById('newCart');
+  const logoutbtn = formNewCart.querySelector('#logoutbtn');
+
+  formNewCart.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const response = await fetch(`/api/cart`, {
+      method: 'POST',
+      
+    }); 
+  console.log(response.status);
+
+    if (response.status === 200) {
+     const data = await response.json();
+     console.log(data);
+      const cartId = data._id;
+      window.location.href = `/api/cart/${cartId}`
+    } else {
+      const error = await response.json();
+      alert(error.message);
+    }
+
+    
+  });
+
+  logoutbtn.addEventListener('click', async event => {
+      event.preventDefault();
+
+      const Deleteresponse = await fetch('/api/sesiones/current', {
+        method: 'DELETE',
+       
+      });
+
+    if(Deleteresponse.status === 200) {
+      window.location.href = '/login';
+  }
+  })
+</script>

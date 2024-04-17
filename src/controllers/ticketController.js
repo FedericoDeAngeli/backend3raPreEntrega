@@ -66,9 +66,9 @@ export async function handlePost( req, res, next ) {
          const mensaje = ticket
     
          
-       await emailService.sendEmail(destinatario, asunto, ticket)
+       //await emailService.sendEmail(destinatario, asunto, mensaje)
 
-        await smsService.send(ADMIN_PHONE_NUMBER, ticket)
+       //await smsService.send(ADMIN_PHONE_NUMBER, ticket)
         res.json(ticket)
         
     } catch (error) {

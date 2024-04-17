@@ -1,23 +1,56 @@
 <h1>Lista de productos</h1>
 
 <div>
-     <ul>
-            {{#each products}}
-            <li>
-                <strong>Nombre: </strong>{{this.title}}<br>
-                <strong>Precio: </strong>{{this.price}}<br>
-                <strong>Stock: </strong>{{this.stock}}<br>
-                <strong>Category: </strong>{{this.category}}<br>
-               
-              
-                <form class="add-to-cart-btn" id={{this.id}}>
-                    <input type="number" name="quantity" value="0" min="0">
-                    <button type="submit">Agregar al carrito</button>
-                </form>
-            </li>
-            {{/each}}
-        </ul>
+    <h2>CartID: {{cartId}}</h2>
+    <ul>
+        {{#each products}}
+        <li>
+            <strong>Nombre: </strong>{{this.title}}<br>
+            <strong>Precio: </strong>{{this.price}}<br>
+            <strong>Stock: </strong>{{this.stock}}<br>
+            <strong>Categoría: </strong>{{this.category}}<br>
+            
+            <form class="addToCartForm" data-product-id="{{this._id}}">
+                <input type="number" name="quantity" class="quantityInput" value="0" min="0">
+                <button type="submit" class="addToCartBtn">Agregar al carrito</button>
+            </form>
+        </li>
+        {{/each}}
+    </ul>
 </div>
 
+<script>
+    // Selecciona todos los formularios con la clase "addToCartForm"
+    const addToCartForms = document.querySelectorAll(".addToCartForm");
 
-   
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', async event => {
+            event.preventDefault();
+
+            // Encuentra el elemento de entrada de cantidad dentro del formulario actual
+            const quantity = form.querySelector('.quantityInput').value;
+
+            // Obtén el ID del producto del atributo data-product-id del formulario
+            const productId = form.getAttribute('data-product-id');
+
+            // Crea un objeto FormData y agrega la cantidad
+            const formData = new FormData();
+            formData.append('quantity', quantity);
+
+            // Realiza la solicitud POST al servidor
+            const response = await fetch(`/api/cart/{{cartId}}/product/${productId}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                // Manejar la respuesta si es exitosa
+                console.log('Producto agregado al carrito');
+                window.location.href= `/cart/{{cartId}}`
+            } else {
+                // Manejar la respuesta si hay errores
+                console.error('Error al agregar el producto al carrito');
+            }
+        });
+    });
+</script>

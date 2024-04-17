@@ -7,8 +7,8 @@ class TicketDAO {
         return ticket;
     }
 
-    async readOne(id){
-        const ticket = await TicketManager.findById(id).lean()
+    async readOne(_id){
+        const ticket = await TicketManager.findById(_id).lean()
         return ticket;
     }
 
