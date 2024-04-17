@@ -12,6 +12,7 @@ export const ProductSchema = new Schema({
     stock: {type: Number },
     status: {type: String, default: "true" },
     category: {type: String, required: true},
+    userId: {type: String}
 },{
     strict: "throw",
     versionKey: false,

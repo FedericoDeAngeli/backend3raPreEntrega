@@ -3,6 +3,7 @@ import { dbProductos } from "../models/productModel.js"
 import { faker } from "@faker-js/faker"
 
 import { logger } from "../utils/logger.js"
+import { emailService } from "../services/emailServices.js"
 
 export async function handleGet( req, res, next){
    try {
@@ -22,8 +23,12 @@ export async function handleGet( req, res, next){
     
  export  async function handlePost(req, res, next) {
     try {
-        
-            res.json(await productService.createProduct(req.body))
+        if(req.user.rol === "premium"){
+        req.body.userId = req.user.email
+    }
+    
+        const product = await productService.createProduct(req.body)
+           res.json(product)
         
     } catch (error) {
         logger.warning("Error en handlePost Productos"),
@@ -44,7 +49,17 @@ export async function handleGet( req, res, next){
 
 export async function handleDelete(req, res, next) {
     try {
+        const product =  await productService.getProduct(req.params.id)
+        console.log(product.userId)
+        if(product.userId){
+            let destinatario = "fdeangeli_90@hotmail.com"
+         let asunto = "Producto eliminado"
+         let mensaje = "Tu producto fue eliminado" 
+            emailService.sendEmail(destinatario, asunto, mensaje)
+            console.log("Email enviado")
+        }
         await productService.deleteProduct(req.params.id)
+
         res.send("Delete ok")
     } catch (error) {
         logger.warning("Error en handleDelete Productos"),

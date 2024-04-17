@@ -16,11 +16,13 @@ export function soloLogueadosWeb(req, res, next) {
   }
 
 export function soloAdmin(req, res, next) {
-  if (req.user.rol !== "admin") {
-   return res.send("solo admin");
+  if (req.user.rol !== "admin" && req.user.rol !== "premium") {
+   return res.send("No tienes permisos para crear productos");
   }
   next();
 }
+
+
 
 export function soloUser(req, res, next) {
   if(req.user.rol !== "user"){
